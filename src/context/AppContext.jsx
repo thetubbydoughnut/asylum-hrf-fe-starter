@@ -45,27 +45,36 @@ const useAppContextProvider = () => {
   };
 
   const fetchData = async () => {
-    // TODO: fetch all the required data and set it to the graphData state
     try {
-      const fiscalDataRes = await getFiscalData();
-      const citizenshipRes = await getCitizenshipResults();
-
-      const fiscalData = fiscalDataRes.data;
-      const citizenshipData = citizenshipRes.data;
-
-      if (fiscalData && citizenshipData) {
+      const fiscalDataResponse = await getFiscalData();
+      const citizenshipDataResponse = await getCitizenshipResults();
+  
+      // Extract the data arrays from the response objects
+      const fiscalData = fiscalDataResponse.data;
+      const citizenshipData = citizenshipDataResponse.data;
+  
+      // Transform fiscalData into an array of objects
+      const transformedFiscalData = Array.isArray(fiscalData.yearResults)
+        ? fiscalData.yearResults
+        : Object.keys(fiscalData).map(key => ({
+            fiscal_year: key,
+            ...fiscalData[key],
+          }));
+  
+      // Ensure both are arrays and match the expected structure
+      if (Array.isArray(transformedFiscalData) && Array.isArray(citizenshipData)) {
         const combinedData = {
-          ...fiscalData,
-          ...citizenshipData,
+          yearResults: transformedFiscalData, // Ensure this is an array
+          citizenshipResults: citizenshipData, // Ensure this is an array
         };
-        console.log('combinedData', combinedData);
+        console.log('Combined Data:', combinedData); // Log the combined data
         setGraphData(combinedData);
+      } else {
+        console.error('Data structure is incorrect:', { transformedFiscalData, citizenshipData });
       }
-    }
-    catch (error) {
+    } catch (error) {
       console.error('Error fetching data:', error);
-    }
-    finally {
+    } finally {
       setIsDataLoading(false);
     }
   };
