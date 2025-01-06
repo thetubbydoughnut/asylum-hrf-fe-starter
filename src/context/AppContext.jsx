@@ -31,8 +31,14 @@ const useAppContextProvider = () => {
 
   const getCitizenshipResults = async () => {
     // TODO: Replace this with functionality to retrieve the data from the citizenshipSummary endpoint
-    const citizenshipRes = testData.citizenshipResults;
-    return citizenshipRes;
+    try {
+      const citizenshipRes = await axios.get('https://hrf-asylum-be-b.herokuapp.com/cases/citizenshipSummary');
+      return citizenshipRes;
+    }
+    catch (error) {
+      console.error('Error fetching citizenship data:', error);
+      return null;
+    }
   };
 
   const updateQuery = async () => {
