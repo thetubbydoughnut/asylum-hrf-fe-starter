@@ -47,6 +47,17 @@ const useAppContextProvider = () => {
 
   const fetchData = async () => {
     // TODO: fetch all the required data and set it to the graphData state
+    try {
+      const fiscalData = await getFiscalData();
+      const citizenshipData = await getCitizenshipResults();
+      setGraphData({ ...fiscalData, ...citizenshipData });
+    }
+    catch (error) {
+      console.error('Error fetching data:', error);
+    }
+    finally {
+      setIsDataLoading(false);
+    }
   };
 
   const clearQuery = () => {
