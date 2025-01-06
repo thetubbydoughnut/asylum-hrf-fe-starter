@@ -17,10 +17,16 @@ const useAppContextProvider = () => {
 
   useLocalStorage({ graphData, setGraphData });
 
-  const getFiscalData = () => {
+  const getFiscalData = async () => {
     // TODO: Replace this with functionality to retrieve the data from the fiscalSummary endpoint
-    const fiscalDataRes = testData;
-    return fiscalDataRes;
+    try {
+      const fiscalDataRes = await axios.get('https://hrf-asylum-be-b.herokuapp.com/cases/fiscalSummary');
+      return fiscalDataRes;
+    }
+    catch (error) {
+      console.error('Error fetching fiscal data:', error);
+      return null;
+    }
   };
 
   const getCitizenshipResults = async () => {
