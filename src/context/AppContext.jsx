@@ -1,6 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import axios from 'axios';
-import testData from '../data/test_data.json';
 import { useLocalStorage } from '../hooks/useLocalStorage.js';
 
 const AppContext = createContext({});
@@ -12,7 +11,7 @@ const AppContext = createContext({});
  * - Populate the graphs with the stored data
  */
 const useAppContextProvider = () => {
-  const [graphData, setGraphData] = useState(testData);
+  const [graphData, setGraphData] = useState({});
   const [isDataLoading, setIsDataLoading] = useState(false);
 
   useLocalStorage({ graphData, setGraphData });
@@ -50,7 +49,12 @@ const useAppContextProvider = () => {
     try {
       const fiscalData = await getFiscalData();
       const citizenshipData = await getCitizenshipResults();
-      setGraphData({ ...fiscalData, ...citizenshipData });
+      if (fiscalData && citizenshipData) {
+        setGraphData({
+          ...fiscalData,
+          ...citizenshipData,
+        });
+      }
     }
     catch (error) {
       console.error('Error fetching data:', error);
