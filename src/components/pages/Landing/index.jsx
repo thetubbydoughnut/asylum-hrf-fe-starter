@@ -73,7 +73,7 @@ export const LandingPage = () => {
         {/* Buttons */}
         <div className="flex justify-center gap-6 pb-16">
           <button 
-            onClick={() => navigate('/data')}
+            onClick={() => navigate('/graphs')}
             className="bg-[rgb(170,170,170)] text-white min-w-[114px] min-h-[44px] py-[5px] px-[10px] font-serif text-base"
           >
             View the Data
