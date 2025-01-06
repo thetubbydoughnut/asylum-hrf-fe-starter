@@ -47,13 +47,19 @@ const useAppContextProvider = () => {
   const fetchData = async () => {
     // TODO: fetch all the required data and set it to the graphData state
     try {
-      const fiscalData = await getFiscalData();
-      const citizenshipData = await getCitizenshipResults();
+      const fiscalDataRes = await getFiscalData();
+      const citizenshipRes = await getCitizenshipResults();
+
+      const fiscalData = fiscalDataRes.data;
+      const citizenshipData = citizenshipRes.data;
+
       if (fiscalData && citizenshipData) {
-        setGraphData({
+        const combinedData = {
           ...fiscalData,
           ...citizenshipData,
-        });
+        };
+        console.log('combinedData', combinedData);
+        setGraphData(combinedData);
       }
     }
     catch (error) {
