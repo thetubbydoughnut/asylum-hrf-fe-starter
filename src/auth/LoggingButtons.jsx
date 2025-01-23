@@ -1,24 +1,39 @@
 /**
- * TODO: Ticket 3:
- * Implement authentication and logging functionality using Auth0
+ * Objective 2: Login/Logout Button Implementation
+ * 
+ * This component handles the authentication UI in the navigation menu.
+ * It provides:
+ * 1. A toggle button that switches between Login/Logout
+ * 2. Integration with Auth0's authentication methods
+ * 3. Proper redirect handling for both login and logout
  */
+import { useAuth0 } from '@auth0/auth0-react';
+
 export const LoggingButtons = () => {
-  // TODO: Replace these with Auth0 functionality
-  const isAuthenticated = false;
+  // Get authentication functions and state from Auth0
+  const { loginWithRedirect, logout, isAuthenticated } = useAuth0();
 
-  const buttonText = isAuthenticated ? 'Log Out' : 'Log In';
+  // Handle login with Auth0 redirect
+  const handleLogin = () => {
+    loginWithRedirect();
+  };
 
-  const handleLogging = () => {
-    if (isAuthenticated) {
-      // TODO: Add Logout functionality here:
-    } else {
-      // TODO: Add Redirect functionality here:
-    }
+  // Handle logout with redirect back to home
+  const handleLogout = () => {
+    logout({ 
+      logoutParams: {
+        returnTo: window.location.origin
+      }
+    });
   };
 
   return (
-    <button className='nav-btn  px-4 py-1' onClick={handleLogging}>
-      {buttonText}
+    // Show either Login or Logout button based on authentication state
+    <button 
+      onClick={isAuthenticated ? handleLogout : handleLogin}
+      className="nav-btn"
+    >
+      {isAuthenticated ? 'Logout' : 'Login'}
     </button>
   );
 };
