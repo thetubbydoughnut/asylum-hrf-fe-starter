@@ -4,9 +4,15 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { GraphsPage } from './components/pages/DataVisualizations/GraphsPage.jsx';
 import { NotFoundPage } from './components/pages/NotFound/index.jsx';
 import * as React from 'react';
-import Profile from './components/pages/Profile/index.jsx';
+import { ProfilePage } from './components/pages/Profile';
 import { pageWrapper } from './components/layout/PageWrapper.jsx';
 
+/**
+ * Objective 3: Added Profile route
+ * - Protected route that only appears when authenticated
+ * - Wrapped in pageWrapper for consistent layout
+ * - Added error handling with NotFoundPage
+ */
 const router = createBrowserRouter([
   {
     path: '/',
@@ -20,7 +26,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/profile',
-    element: pageWrapper(<Profile />),
+    element: pageWrapper(<ProfilePage />),
     errorElement: <NotFoundPage />,
   },
 ]);
